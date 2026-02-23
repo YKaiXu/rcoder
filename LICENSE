@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 Trae Team
+Copyright (c) 2026 YuKaiXu (yukaixu@outlook.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -11,6 +11,52 @@ furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
+
+ADDITIONAL LEGAL TERMS AND CONDITIONS:
+
+1. LAWFUL USE ONLY: This Software may only be used for lawful purposes with proper
+   authorization. Users must comply with all applicable local, national, and 
+   international laws and regulations.
+
+2. NO UNAUTHORIZED ACCESS: Users must have explicit permission to access any 
+   computer systems or networks they connect to using this Software.
+
+3. SECURITY RESPONSIBILITIES: Users are responsible for implementing appropriate
+   security measures, including but not limited to:
+   - Using strong passwords and SSH keys
+   - Configuring proper firewall rules
+   - Implementing access controls and monitoring
+   - Keeping software and dependencies updated
+
+4. NO MALICIOUS ACTIVITIES: Prohibited uses include, but are not limited to:
+   - Unauthorized access to computer systems
+   - Data theft or unauthorized data collection
+   - Network attacks or intrusion attempts
+   - Any activities that violate computer crime laws
+
+5. DISCLAIMER OF LIABILITY: The Software is provided "AS IS", without warranty 
+   of any kind, express or implied. The authors and copyright holders shall not 
+   be liable for any claims, damages, or other liability arising from the use 
+   or misuse of this Software.
+
+6. USER RESPONSIBILITY: Users assume full responsibility for:
+   - Ensuring compliance with applicable laws
+   - Protecting authentication credentials
+   - Implementing appropriate security measures
+   - Monitoring and logging system access
+
+7. INDEMNIFICATION: Users agree to indemnify and hold harmless the developers,
+   authors, and copyright holders from any claims, damages, or legal actions
+   resulting from misuse of this Software.
+
+8. JURISDICTION: This license is governed by the laws of the People's Republic 
+   of China. Any disputes shall be resolved in the courts of China.
+
+9. EXPORT COMPLIANCE: Users must comply with all applicable export control laws
+   and regulations when using or distributing this Software.
+
+10. TERMINATION: This license automatically terminates if you violate any of 
+    these terms and conditions.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,

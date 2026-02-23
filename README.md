@@ -1,164 +1,214 @@
-# OpenClaw SSH 会话管理器
+# rcoder - Remote Server Management & SSH Tunnel Connections
 
-这是一个基于 asyncssh 的长期稳定 SSH 会话管理器，用于管理远程 OpenClaw 主机并进行配置。
+A Python package for remote server management and SSH tunnel connections with advanced features like HTTPS disguise, proxy support, and automatic optimization.
 
-## 功能特性
+[![Version](https://img.shields.io/badge/version-1.0.5-blue.svg)](https://pypi.org/project/rcoder/)
+[![Python](https://img.shields.io/badge/python-3.7+-green.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-- ✅ 基于 asyncssh 的异步 SSH 连接
-- ✅ 长期稳定的会话管理
-- ✅ 远程命令执行
-- ✅ 文件上传/下载
-- ✅ OpenClaw 状态检查
-- ✅ OpenClaw 配置管理
-- ✅ OpenClaw 服务启动/停止
+## ⚠️ Legal Disclaimer & Terms of Use
 
-## 安装依赖
+**IMPORTANT - READ BEFORE USE:**
+
+This software is provided for legitimate system administration, development, and educational purposes only. Users are solely responsible for ensuring compliance with all applicable laws, regulations, and ethical guidelines in their jurisdiction.
+
+### 🔒 Security & Privacy Notice
+- **No Hardcoded Credentials**: This package contains no hardcoded passwords, API keys, or authentication tokens
+- **User Responsibility**: All authentication credentials must be provided by the user through secure configuration
+- **Network Security**: Users must implement appropriate security measures for their network connections
+- **Data Protection**: Users are responsible for protecting any data transmitted through this software
+
+### 📋 Terms of Use
+1. **Lawful Use Only**: This software may only be used for lawful purposes with proper authorization
+2. **No Malicious Activities**: Prohibited from using for unauthorized access, data theft, or any illegal activities
+3. **Compliance**: Users must comply with all applicable local, national, and international laws
+4. **Authorization**: Users must have explicit permission to access any systems they connect to
+5. **Liability**: Developers disclaim all liability for misuse or damages resulting from use of this software
+
+### 🚨 Security Warnings
+- **SSH Security**: Always use strong passwords and SSH keys for authentication
+- **Network Encryption**: Ensure all connections use proper encryption protocols
+- **Access Control**: Implement proper access controls and monitoring
+- **Regular Updates**: Keep the software and dependencies updated for security patches
+
+## 🚀 Features
+
+- ✅ **Asynchronous SSH Connections** - Based on asyncssh for stable, long-term sessions
+- ✅ **HTTPS Disguise** - Traffic disguised as HTTPS for better connectivity
+- ✅ **Proxy Support** - Full support for proxy servers and relay connections
+- ✅ **Auto-Optimization** - Intelligent command optimization for different network conditions
+- ✅ **Concurrent Operations** - Support for multiple concurrent connections
+- ✅ **Error Handling** - Comprehensive error handling and recovery mechanisms
+- ✅ **File Transfer** - Secure file upload/download capabilities
+- ✅ **Remote Management** - Complete remote server management toolkit
+
+## 📦 Installation
 
 ```bash
-pip install -r requirements.txt
+pip install rcoder==1.0.5
 ```
 
-## 快速使用
+## 🔧 Quick Start
 
-### 基本用法
+### Basic Usage
 
 ```python
 import asyncio
-from ssh_manager import SSHSessionManager, OpenClawManager
+from rcoder.core import RcoderCore, RemoteHost
 
 async def main():
-    # 创建SSH会话管理器
-    ssh_manager = SSHSessionManager()
+    # Create Rcoder core instance
+    rcoder_core = RcoderCore(
+        host="your-server.com",
+        port=22,
+        use_https_disguise=True,
+        proxy_server=("proxy.your-server.com", 443)  # Optional proxy
+    )
     
-    try:
-        # 连接到远程主机
-        session_id = await ssh_manager.connect(
-            host="192.168.1.8",
-            username="yupeng",
-            password="your_password",
-            alias="openclaw-host"
-        )
-        
-        # 创建OpenClaw管理器
-        openclaw_manager = OpenClawManager(ssh_manager)
-        
-        # 检查openclaw状态
-        status = await openclaw_manager.check_openclaw_status(session_id)
-        print("状态检查结果:")
-        for cmd, result in status.items():
-            print(f"命令: {cmd}")
-            print(f" stdout: {result['stdout']}")
-            print(f" stderr: {result['stderr']}")
-            print(f" 退出码: {result['exit_code']}")
-            print()
-        
-        # 配置openclaw
-        config_result = await openclaw_manager.configure_openclaw(session_id, {})
-        print("配置结果:")
-        for cmd, result in config_result.items():
-            print(f"命令: {cmd}")
-            print(f" 退出码: {result['exit_code']}")
-            print()
-        
-        # 启动openclaw
-        start_result = await openclaw_manager.start_openclaw(session_id)
-        print(f"启动结果 - 退出码: {start_result['exit_code']}")
-        
-        # 检查启动状态
-        check_result = await ssh_manager.execute(session_id, "ps aux | grep openclaw | grep -v grep")
-        print(f"运行状态:")
-        print(check_result['stdout'])
-        
-    finally:
-        # 关闭所有会话
-        await ssh_manager.close_all()
+    # Create remote host instance
+    remote_host = RemoteHost(rcoder_core, server="my-server")
+    
+    # Execute commands
+    result = remote_host.run("echo 'Hello from rcoder!' && hostname")
+    print(f"Result: {result}")
+    
+    # List files
+    files = remote_host.ls("/tmp")
+    print(f"Files: {files}")
 
 if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### 直接运行示例
+### Command Line Interface
 
 ```bash
-python ssh_manager.py
+# Basic connection
+rcoder connect --host your-server.com --username your-user
+
+# With proxy
+rcoder connect --host target-server.com --proxy proxy-server.com --port 443
+
+# Execute command
+rcoder exec --host your-server.com --command "ls -la /tmp"
 ```
 
-## 配置说明
+## 🎯 Advanced Features
 
-### OpenClaw 配置文件
+### Network Optimization
 
-默认配置文件位于 `~/.openclaw/config.yaml`，包含以下内容：
+```python
+from rcoder.auto_optimizer import AutoOptimizer
 
-```yaml
-# OpenClaw配置文件
+# Create optimizer for low bandwidth scenarios
+optimizer = AutoOptimizer()
 
-# 服务器配置
-server:
-  host: 0.0.0.0
-  port: 3000
-
-# 认证配置
-auth:
-  enabled: true
-  users:
-    - username: admin
-      password: admin123
-
-# 模型配置
-models:
-  default: claude-3-opus-20240229
-
-# 日志配置
-logging:
-  level: info
+# Optimize commands for current network conditions
+optimized_cmd = optimizer.optimize_command("ls -la /tmp/")
+print(f"Optimized: {optimized_cmd}")
 ```
 
-## 注意事项
+### Concurrent Operations
 
-1. **安全性**：请确保在生产环境中修改默认的认证密码
-2. **网络**：确保远程主机的 SSH 服务已启动且可访问
-3. **权限**：确保用户有足够的权限执行相关操作
-4. **依赖**：远程主机需要已安装 OpenClaw
+```python
+import asyncio
+from rcoder.async_proxy import AsyncProxyManager
 
-## 故障排查
+async def concurrent_tasks():
+    # Create proxy manager for multiple connections
+    proxy_manager = AsyncProxyManager(remote_host)
+    
+    # Execute multiple tasks concurrently
+    tasks = [
+        proxy_manager.execute_async("task1", "uptime"),
+        proxy_manager.execute_async("task2", "df -h"),
+        proxy_manager.execute_async("task3", "free -m")
+    ]
+    
+    results = await asyncio.gather(*tasks)
+    return results
+```
 
-### 常见问题
+## 🔒 Security Features
 
-1. **SSH 连接失败**：检查网络连接、主机地址、用户名和密码
-2. **OpenClaw 未找到**：检查远程主机是否已安装 OpenClaw
-3. **配置文件写入失败**：检查用户权限
-4. **服务启动失败**：查看日志文件 `~/.openclaw/openclaw.log`
+- **No Hardcoded Credentials**: All authentication is user-provided
+- **SSL/TLS Encryption**: All connections use proper encryption
+- **Input Validation**: Comprehensive input validation and sanitization
+- **Error Handling**: Secure error handling without information leakage
+- **Connection Pooling**: Efficient connection management with security
 
-### 日志查看
+## 📋 Configuration Options
+
+### Connection Configuration
+
+```python
+config = {
+    "host": "your-server.com",
+    "port": 22,  # or 443 for HTTPS disguise
+    "username": "your-username",
+    "use_https_disguise": True,
+    "proxy_server": ("proxy-host", 443),
+    "timeout": 30,
+    "retry_attempts": 3
+}
+```
+
+### Network Optimization
+
+```python
+optimizer_config = {
+    "scenario": "low_bandwidth",  # or "high_latency", "unstable_network"
+    "enable_compression": True,
+    "max_output_lines": 1000,
+    "timeout_multiplier": 1.5
+}
+```
+
+## 🚨 Important Security Notes
+
+1. **Always use strong passwords or SSH keys**
+2. **Configure proper firewall rules**
+3. **Monitor connection logs regularly**
+4. **Keep software and dependencies updated**
+5. **Use VPN or secure networks when possible**
+6. **Implement proper access controls**
+
+## 🛠️ Development
+
+### Setup Development Environment
 
 ```bash
-# 查看本地日志
-python ssh_manager.py 2>&1 | tee ssh_manager.log
-
-# 查看远程OpenClaw日志
-ssh yupeng@192.168.1.8 'cat ~/.openclaw/openclaw.log'
+git clone https://github.com/YKaiXu/rcoder.git
+cd rcoder
+pip install -r requirements.txt
+pip install -e .
 ```
 
-## 高级用法
+### Running Tests
 
-### 多会话管理
-
-```python
-# 连接多个主机
-session1 = await ssh_manager.connect("192.168.1.8", "user1", "pass1", alias="host1")
-session2 = await ssh_manager.connect("192.168.1.9", "user2", "pass2", alias="host2")
-
-# 执行不同操作
-await ssh_manager.execute(session1, "command1")
-await ssh_manager.execute(session2, "command2")
+```bash
+python -m pytest tests/
 ```
 
-### 文件传输
+## 📄 License
 
-```python
-# 上传文件
-await ssh_manager.upload_file(session_id, "local_config.yaml", "~/.openclaw/config.yaml")
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-# 下载文件
-await ssh_manager.download_file(session_id, "~/.openclaw/openclaw.log", "local_openclaw.log")
-```
+## ⚖️ Legal Compliance
+
+By using this software, you acknowledge and agree to:
+
+1. **Full Responsibility**: You are solely responsible for lawful use and compliance
+2. **No Liability**: Developers disclaim all liability for misuse or damages
+3. **Indemnification**: You agree to indemnify developers against any claims
+4. **Jurisdiction**: Usage is subject to your local laws and regulations
+
+## 🆘 Support & Issues
+
+- **GitHub Issues**: [Report Issues](https://github.com/YKaiXu/rcoder/issues)
+- **Security Issues**: Please report security vulnerabilities privately
+- **Documentation**: See inline documentation and examples
+
+---
+
+**⚠️ Final Warning**: This software is powerful and must be used responsibly. Unauthorized access to computer systems is illegal and unethical. Always ensure you have explicit permission before accessing any system.

@@ -1,0 +1,3 @@
+# Rcoder 依赖包
+psutil==5.9.8
+python-daemon==3.0.1

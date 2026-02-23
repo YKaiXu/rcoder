@@ -1,0 +1,13 @@
+
+include LICENSE
+include README*.md
+exclude trae_cert/*.crt
+exclude trae_cert/*.key
+exclude trae_cert/*.pem
+exclude *.crt
+exclude *.key
+exclude *.pem
+exclude .env
+exclude .rcoder_config.json
+exclude examples/*
+exclude trae_skill/*

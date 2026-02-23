@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rcoder"
+version = "1.0.5"
+description = "远程代码执行与管理系统，支持低带宽场景和中转服务器场景"
+readme = "README_RCODER.md"
+authors = [
+    { name = "YuKaiXu", email = "yukaixu@outlook.com" }
+]
+license = { file = "LICENSE" }
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: System :: Systems Administration",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP",
+]
+keywords = ["remote", "code", "execution", "management", "proxy", "low-bandwidth"]
+requires-python = ">=3.7"
+dependencies = [
+    "psutil>=5.9.8",
+    "python-daemon>=3.0.1"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/YKaiXu/rcoder"
+"Documentation" = "https://github.com/YKaiXu/rcoder"
+"Source" = "https://github.com/YKaiXu/rcoder"
+"Tracker" = "https://github.com/YKaiXu/rcoder/issues"
+
+[project.scripts]
+rcoder = "rcoder.cli:main"
+
+[tool.setuptools]
+packages = ["rcoder"]
+
+[tool.setuptools.package-data]
+rcoder = ["*.py"]

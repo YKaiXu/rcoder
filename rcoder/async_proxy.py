@@ -310,41 +310,8 @@ class AsyncProxyManager:
         
         print(f"📡 发送命令到中转服务器: {command_id}")
         
-        # 构建代理命令
-        proxy_command = f"python -c \""
-        proxy_command += "import json\n"
-        proxy_command += "import subprocess\n"
-        proxy_command += "import time\n"
-        proxy_command += "\n"
-        proxy_command += f"# 命令信息\n"
-        proxy_command += f"command_id = '{command_id}'\n"
-        proxy_command += f"command = '{command}'\n"
-        proxy_command += f"target_server = '{target_server}'\n"
-        proxy_command += f"timestamp = {time.time()}\n"
-        proxy_command += "\n"
-        proxy_command += "# 无状态邮局模式处理\n"
-        proxy_command += "print('🔄 中转服务器接收命令:', command_id)\n"
-        proxy_command += "print('🚀 向目标服务器推送指令...')\n"
-        proxy_command += "\n"
-        proxy_command += "# 执行命令（模拟目标服务器执行）\n"
-        proxy_command += "try:\n"
-        proxy_command += "    result = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, text=True)\n"
-        proxy_command += "    status = 'success'\n"
-        proxy_command += "    print('✅ 目标服务器执行成功')\n"
-        proxy_command += "except Exception as e:\n"
-        proxy_command += "    result = str(e)\n"
-        proxy_command += "    status = 'error'\n"
-        proxy_command += "    print('❌ 目标服务器执行失败:', result)\n"
-        proxy_command += "\n"
-        proxy_command += "# 构建反馈信息\n"
-        proxy_command += "feedback = json.dumps({\n"
-        proxy_command += "    'id': command_id,\n"
-        proxy_command += "    'status': status,\n"
-        proxy_command += "    'result': result,\n"
-        proxy_command += "    'timestamp': time.time()\n"
-        proxy_command += "})\n"
-        proxy_command += "print('📨 反馈信息:', feedback)\n"
-        proxy_command += '"'
+        # 构建代理命令（简化版本）
+        proxy_command = f"echo 'Processing command {command_id}' && {command}"
         
         # 创建队列项
         queue_item = {

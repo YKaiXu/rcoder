@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rcoder"
-version = "1.0.5"
+version = "2.0.1"
 description = "远程代码执行与管理系统，支持低带宽场景和中转服务器场景"
 readme = "README_RCODER.md"
 authors = [
